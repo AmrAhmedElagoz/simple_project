@@ -1,11 +1,11 @@
 import pytest
-from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
 from simple_project.main import IrisClassifier
 
 # Test Class: Test the behavior of IrisClassifier
+
 
 class TestIrisClassifier:
     """
@@ -36,7 +36,7 @@ class TestIrisClassifier:
         assert classifier.y is not None
         assert len(classifier.X) == 150  # 150 samples in the Iris dataset
         assert len(classifier.y) == 150
-        
+
         # Check if the classifier is properly initialized
         assert isinstance(classifier.clf, DecisionTreeClassifier)
 
@@ -46,7 +46,7 @@ class TestIrisClassifier:
         This checks if the classifier can train on the Iris dataset.
         """
         classifier.train_model()  # Training the model
-        
+
         # Since the train_model method prints the accuracy, we are not testing for return value,
         # but we can check if the model training process runs without exceptions.
 
@@ -58,15 +58,17 @@ class TestIrisClassifier:
         This tests that the model is working and provides a non-trivial accuracy score.
         """
         # Split the dataset for testing
-        X_train, X_test, y_train, y_test = train_test_split(classifier.X, classifier.y, test_size=0.2, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(
+            classifier.X, classifier.y, test_size=0.2, random_state=42
+        )
         classifier.clf.fit(X_train, y_train)
-        
+
         # Make predictions
         y_pred = classifier.clf.predict(X_test)
-        
+
         # Calculate accuracy
         accuracy = accuracy_score(y_test, y_pred)
-        
+
         # Check if the accuracy is above a reasonable threshold (e.g., 70%)
         assert accuracy > 0.7
 
@@ -76,17 +78,21 @@ class TestIrisClassifier:
         This checks if the model can predict on unseen data.
         """
         # Split the data
-        X_train, X_test, y_train, y_test = train_test_split(classifier.X, classifier.y, test_size=0.2, random_state=42)
-        
+        X_train, X_test, y_train, y_test = train_test_split(
+            classifier.X, classifier.y, test_size=0.2, random_state=42
+        )
+
         # Train the classifier
         classifier.clf.fit(X_train, y_train)
-        
+
         # Make predictions
         y_pred = classifier.clf.predict(X_test)
-        
+
         # Check if predictions are made
         assert y_pred is not None
-        assert len(y_pred) == len(y_test)  # Number of predictions should match number of test samples
+        assert len(y_pred) == len(
+            y_test
+        )  # Number of predictions should match number of test samples
 
     def test_model_not_overfitting(self, classifier):
         """
@@ -94,17 +100,21 @@ class TestIrisClassifier:
         We check if accuracy on the training data is similar to the accuracy on test data.
         """
         # Split the data
-        X_train, X_test, y_train, y_test = train_test_split(classifier.X, classifier.y, test_size=0.2, random_state=42)
-        
+        X_train, X_test, y_train, y_test = train_test_split(
+            classifier.X, classifier.y, test_size=0.2, random_state=42
+        )
+
         # Train the classifier
         classifier.clf.fit(X_train, y_train)
-        
+
         # Evaluate the classifier on both training and test data
         train_accuracy = classifier.clf.score(X_train, y_train)
         test_accuracy = classifier.clf.score(X_test, y_test)
-        
+
         # Ensure that the model is not overfitting (train accuracy should not be excessively higher than test accuracy)
-        assert abs(train_accuracy - test_accuracy) < 0.2  # Example threshold for overfitting
+        assert (
+            abs(train_accuracy - test_accuracy) < 0.2
+        )  # Example threshold for overfitting
 
     def test_classifier_data_integrity(self, classifier):
         """
@@ -114,7 +124,7 @@ class TestIrisClassifier:
         # Ensure that the features are of the expected shape
         assert classifier.X.shape == (150, 4)  # 150 samples, 4 features each
         assert classifier.y.shape == (150,)  # 150 target labels
-        
+
         # Ensure no NaN values in the dataset
         assert not any(map(lambda x: x is None, classifier.X.flatten()))
         assert not any(map(lambda x: x is None, classifier.y))
@@ -133,7 +143,6 @@ class TestIrisClassifier:
         This ensures that the model can go through the entire pipeline without issues.
         """
         classifier.train_model()  # Train the model
-        
+
         # We are not concerned with specific outputs, but ensure that no errors are raised during the entire pipeline.
         # If train_model works without exceptions, the full workflow is considered passed.
-

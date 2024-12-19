@@ -63,11 +63,11 @@ warn_unused_configs = true
 no_implicit_reexport = true
 
 [tool.black]
-line-length = 88  # Set the line length (default is 88)
-target-version = ['py310', 'py312']  # Python versions to target
-skip-string-normalization = false  # Don't skip string normalization
-skip-magic-trailing-comma = false  # Automatically add trailing commas
-include = '\.pyi?$'  # Files to include
+line-length = 88  
+target-version = ['py310', 'py312']  
+skip-string-normalization = false  
+skip-magic-trailing-comma = false  
+include = '\.pyi?$'  
 exclude = '''
 /(
     \.eggs         
